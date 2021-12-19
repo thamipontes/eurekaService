@@ -1,19 +1,23 @@
 server:
   port: ${PORT:5000}
 
-security:
-  user:
-    password: ${eureka.password}
-
 eureka:
   instance:
-    hostname: localhost
+    hostname: ${APP_NAME}.herokuapp.com
   client:
-    registerWithEureka: false
-    fetchRegistry: false
+    registerWithEureka: true
+    fetchRegistry: true
     serviceUrl:
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
-  password: ${EUREKA_USER_PASSWORD:password}
+      defaultZone: ${EUREKA_PEER_URL}/eureka/
+    tls:
+      key-password: ${EUREKA_USER_PASSWORD:password}
   server:
     enable-self-preservation: false
     renewalPercentThreshold: 0.33
+spring:
+  security:
+    user:
+      password: ${eureka.password}
+  config:
+    activate:
+      on-profile: peer
